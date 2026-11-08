@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premier League Tracker - هداف الدوري الإنجليزي</title>
+    <title>Premier League - Champions League Tracker</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -109,11 +109,14 @@
         .trophy-glow {
             filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.4));
         }
+        .trophy-shimmer {
+            background: linear-gradient(135deg, #fff3a1 0%, #d4af37 40%, #aa7c11 100%);
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 pb-16">
 
-    <!-- Floating Animation Overlay -->
+    <!-- Animation Overlay Layer -->
     <div id="animation-overlay-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
     <!-- Notification Toast -->
@@ -164,7 +167,7 @@
                     </button>
                     <button onclick="switchTab('stadium')" id="tab-btn-stadium" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm text-emerald-200/70 hover:text-white transition-all">
                         <i class="fa-solid fa-futbol text-base sm:text-lg"></i>
-                        <span>الملعب</span>
+                        <span>الملعب والأهداف</span>
                     </button>
                     <button onclick="switchTab('trophies')" id="tab-btn-trophies" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm text-emerald-200/70 hover:text-white transition-all">
                         <i class="fa-solid fa-trophy text-base sm:text-lg"></i>
@@ -176,7 +179,7 @@
                     </button>
                 </div>
 
-                <!-- Action Controls: Theme + Hard Reset + Cycle Reset -->
+                <!-- Theme Switch & Actions -->
                 <div class="flex items-center gap-2">
                     <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl bg-emerald-900/60 hover:bg-emerald-800 flex items-center justify-center text-amber-400 transition-colors shadow-sm" title="تغير المظهر">
                         <i id="theme-icon" class="fa-solid fa-moon text-base"></i>
@@ -212,12 +215,13 @@
 
         <!-- ==================== TAB 1: DASHBOARD ==================== -->
         <section id="tab-section-dashboard" class="tab-content space-y-8">
+            
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-3xl border-2 border-emerald-600/30 shadow-md">
                 <div>
                     <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                        غرفة القيادة - Premier League 🏆
+                        غرفة قيادة هداف الدوري الإنجليزي 🏆
                     </h2>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">تابع أداءك اليومي، أهدافك، ومعرض الكؤوس التراكمي.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">تابع أداءك اليومي، أهدافك السريعة، ومركزك بين الـ 20 منافساً في جدول الترتيب.</p>
                 </div>
                 <button onclick="switchTab('stadium')" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-2xl transition-all shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-plus-circle"></i> إضافة أهداف جديدة
@@ -226,8 +230,9 @@
 
             <!-- Overview Grid Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <!-- Goals -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-blue-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden">
+                
+                <!-- Goals Summary Card -->
+                <div class="bg-white dark:bg-slate-900 border-2 border-blue-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-blue-500 transition-all">
                     <div class="flex items-center justify-between mb-3">
                         <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-bullseye text-lg"></i>
@@ -247,8 +252,8 @@
                     </div>
                 </div>
 
-                <!-- Assists -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-red-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden">
+                <!-- Assists Summary Card -->
+                <div class="bg-white dark:bg-slate-900 border-2 border-red-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-red-500 transition-all">
                     <div class="flex items-center justify-between mb-3">
                         <div class="w-10 h-10 rounded-2xl bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-hands-holding-child text-lg"></i>
@@ -268,8 +273,8 @@
                     </div>
                 </div>
 
-                <!-- Clean Sheet -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-amber-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden">
+                <!-- Clean Sheet Summary Card -->
+                <div class="bg-white dark:bg-slate-900 border-2 border-amber-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-amber-500 transition-all">
                     <div class="flex items-center justify-between mb-3">
                         <div class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-shield-halved text-lg"></i>
@@ -289,8 +294,8 @@
                     </div>
                 </div>
 
-                <!-- Saves -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-emerald-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden">
+                <!-- Saves Summary Card -->
+                <div class="bg-white dark:bg-slate-900 border-2 border-emerald-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-emerald-500 transition-all">
                     <div class="flex items-center justify-between mb-3">
                         <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-hand-fist text-lg"></i>
@@ -309,16 +314,11 @@
                         <span id="dash-saves-pct">0%</span>
                     </div>
                 </div>
+
             </div>
 
-            <!-- Pitch Green Info Banner -->
+            <!-- Detailed Progress Highlights Banner -->
             <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-green-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-emerald-600/40 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="space-y-2 text-center md:text-right">
                     <h3 class="text-xl font-black text-emerald-400 flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-fire text-amber-400"></i> معرض الكؤوس التراكمي
-                    </h3>
-                    <p class="text-slate-300 text-sm leading-relaxed max-w-2xl">
-                        الكؤوس محفورة في تاريخك؛ كل ما تكسب بطولة بتتحط جنب اختها في المعرض التراكمي مع عداد مضاعف، وبدورة 30 يوم أوتوماتيكية بتبدأ من يوم 1 إلى 30!
-                    </p>
-    </div>
-                
+              
