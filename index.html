@@ -1,327 +1,218 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl" class="light">
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هداف الدوري الإنجليزي - لوحة الأبطال</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        cairo: ['Cairo', 'sans-serif'],
-                    },
-                    colors: {
-                        pitch: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
-                            950: '#052e16'
-                        },
-                        goal: '#2563eb',
-                        assist: '#dc2626',
-                        cleansheet: '#d97706',
-                        hattrick: '#9333ea',
-                        save: '#16a34a'
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Fonts - Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Canvas Confetti CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            user-select: none;
-        }
-
-        /* Pitch Green Outer Border Accent */
-        .app-green-border {
-            border: 2px solid #16a34a;
-        }
-        .dark .app-green-border {
-            border: 2px solid #22c55e;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(22, 163, 74, 0.5);
-            border-radius: 99px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(22, 163, 74, 0.8);
-        }
-
-        /* Micro-Animations Keyframes */
-        @keyframes shootBall {
-            0% { transform: scale(0.3) translate(0, 0) rotate(0deg); opacity: 0; }
-            50% { opacity: 1; transform: scale(1.4) translate(-15px, -25px) rotate(180deg); }
-            100% { transform: scale(1) translate(-30px, -50px) rotate(360deg); opacity: 0; }
-        }
-
-        @keyframes passLeg {
-            0% { transform: rotate(0deg) scale(0.8); opacity: 0; }
-            50% { transform: rotate(-25deg) scale(1.3); opacity: 1; }
-            100% { transform: rotate(15deg) scale(1); opacity: 0; }
-        }
-
-        @keyframes saveGlove {
-            0% { transform: translateY(20px) scale(0.7); opacity: 0; }
-            50% { transform: translateY(-10px) scale(1.4); opacity: 1; }
-            100% { transform: translateY(-25px) scale(0.9); opacity: 0; }
-        }
-
-        @keyframes slideTackle {
-            0% { transform: translateX(30px) skewX(20deg); opacity: 0; }
-            50% { transform: translateX(0px) skewX(-10deg) scale(1.2); opacity: 1; }
-            100% { transform: translateX(-30px) skewX(0deg); opacity: 0; }
-        }
-
-        .anim-shoot { animation: shootBall 1.2s ease-out forwards; }
-        .anim-pass { animation: passLeg 1.2s ease-out forwards; }
-        .anim-save { animation: saveGlove 1.2s ease-out forwards; }
-        .anim-tackle { animation: slideTackle 1.2s ease-out forwards; }
-
-        .bubble-btn {
-            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .bubble-btn:active {
-            transform: scale(0.85);
-        }
-
-        /* Realistic Trophy Glow & Shimmer */
-        .trophy-glow {
-            filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.4));
-        }
-        .trophy-shimmer {
-            background: linear-gradient(135deg, #fff3a1 0%, #d4af37 40%, #aa7c11 100%);
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7faf8" />
+  <title>Premier League Tracker</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f8f6;
+      --surface: rgba(255,255,255,.92);
+      --surface-2: #f8fbf9;
+      --ink: #14231d;
+      --muted: #708078;
+      --line: #e4ece7;
+      --green: #13834e;
+      --green-dark: #075d38;
+      --green-soft: #e9f7ef;
+      --red: #d93e4f;
+      --gold: #d9a72e;
+      --shadow: 0 14px 38px rgba(18, 54, 36, .07);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--ink); background:
+        radial-gradient(circle at 8% 0%, rgba(20,131,78,.075), transparent 28rem),
+        linear-gradient(180deg, #fbfdfb 0%, var(--bg) 100%);
+      font-family: Tahoma, Arial, "Segoe UI", sans-serif;
+      transition: background .25s ease, color .25s ease;
+    }
+    body.dark {
+      color-scheme: dark; --bg: #0c1511; --surface: rgba(20,31,25,.96); --surface-2: #17231c;
+      --ink: #edf5ef; --muted: #a0b2a7; --line: #293a30; --green: #50ce89;
+      --green-dark: #9de8bb; --green-soft: #173426; --shadow: 0 16px 42px rgba(0,0,0,.24);
+      background: radial-gradient(circle at 10% 0%, rgba(35,170,98,.15), transparent 30rem), #0c1511;
+    }
+    button { font: inherit; }
+    .app-shell { width: min(1240px, calc(100% - 32px)); margin: 0 auto; padding: 18px 0 56px; }
+    .topbar { display:flex; direction:ltr; align-items:center; justify-content:space-between; gap:14px; padding: 7px 0 17px; }
+    .brand { display:flex; align-items:center; gap:12px; min-width:0; }
+    .brand-mark { width:43px; height:43px; display:grid; place-items:center; color:#fff; border-radius:14px; background:linear-gradient(145deg,#19a764,#075d38); box-shadow:0 8px 18px rgba(8,112,62,.22); font-size:23px; }
+    .brand-name { font-size:clamp(16px,2.2vw,21px); font-weight:900; letter-spacing:.1px; white-space:nowrap; }
+    .brand-sub { color:var(--muted); font-size:11px; margin-top:3px; letter-spacing:1.3px; direction:ltr; text-align:right; }
+    .top-actions { display:flex; align-items:center; gap:8px; }
+    .icon-btn { border:1px solid var(--line); background:var(--surface); color:var(--ink); min-width:42px; height:42px; border-radius:13px; cursor:pointer; display:inline-grid; place-items:center; box-shadow:0 3px 12px rgba(0,0,0,.025); transition:transform .18s,border-color .18s; }
+    .icon-btn:hover { transform:translateY(-2px); border-color:#a9cdb8; }
+    .reset-btn { border:0; background:linear-gradient(135deg,#e44b5c,#b91f36); color:white; padding:0 13px; height:42px; border-radius:13px; cursor:pointer; font-weight:800; box-shadow:0 7px 17px rgba(217,62,79,.19); }
+    .reset-btn:hover { filter:brightness(1.05); transform:translateY(-1px); }
+    .hero { position:relative; overflow:hidden; min-height:220px; border-radius:28px; padding:26px 28px; color:#fff; background:linear-gradient(115deg,#063e2b 0%,#087548 52%,#0b9657 100%); box-shadow:0 20px 42px rgba(5,91,52,.19); }
+    .hero:before,.hero:after { content:""; position:absolute; border:1px solid rgba(255,255,255,.13); pointer-events:none; }
+    .hero:before { width:310px;height:310px;border-radius:50%;left:-75px;top:-85px; }
+    .hero:after { width:130px;height:130px;border-radius:50%;left:15px;top:5px; }
+    .pitch-lines { position:absolute; inset:0; opacity:.12; pointer-events:none; background:linear-gradient(90deg,transparent 49.8%,#fff 50%,transparent 50.2%),linear-gradient(0deg,transparent 49.8%,#fff 50%,transparent 50.2%); background-size:100% 100%; }
+    .pitch-lines:before { content:""; position:absolute; left:50%;top:50%;width:110px;height:110px;border:1px solid #fff;border-radius:50%; transform:translate(-50%,-50%); }
+    .hero-content { position:relative; z-index:1; max-width:720px; }
+    .season-kicker { display:inline-flex; align-items:center; gap:7px; padding:6px 11px; border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.1); border-radius:99px; font-size:12px; font-weight:700; }
+    .season-kicker:before { content:""; width:7px;height:7px;border-radius:50%;background:#9cf1bb;box-shadow:0 0 0 4px rgba(156,241,187,.14); }
+    .hero h1 { font-size:clamp(26px,4vw,39px); line-height:1.15; margin:14px 0 8px; font-weight:900; }
+    .hero p { margin:0; max-width:560px; color:rgba(255,255,255,.82); font-size:14px; line-height:1.8; }
+    .season-progress { margin-top:21px; width:min(510px,100%); }
+    .progress-meta { display:flex; justify-content:space-between; gap:12px; font-size:12px; color:rgba(255,255,255,.9); margin-bottom:8px; }
+    .progress-track { height:8px; border-radius:99px; background:rgba(0,0,0,.2); overflow:hidden; border:1px solid rgba(255,255,255,.1); }
+    .progress-fill { height:100%; border-radius:99px; width:0; background:linear-gradient(90deg,#b5f3c9,#fff); transition:width .4s ease; }
+    .hero-side { position:absolute; z-index:1; left:32px; bottom:25px; display:flex; align-items:center; gap:10px; color:rgba(255,255,255,.8); font-size:11px; }
+    .hero-side strong { color:#fff; font-size:14px; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:12px; margin:32px 2px 14px; }
+    .section-title { font-size:20px; font-weight:900; margin:0; letter-spacing:-.3px; }
+    .section-note { color:var(--muted); font-size:12px; margin:5px 0 0; }
+    .section-tag { color:var(--green); background:var(--green-soft); border:1px solid rgba(19,131,78,.13); padding:7px 11px; border-radius:99px; font-size:11px; font-weight:800; white-space:nowrap; }
+    .metrics-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; }
+    .metric-card { --accent:#2563eb; --accent-soft:#edf4ff; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:17px; min-width:0; box-shadow:var(--shadow); backdrop-filter:blur(14px); position:relative; overflow:hidden; }
+    .metric-card:before { content:"";position:absolute;right:0;top:0;width:4px;height:100%;background:var(--accent);opacity:.9; }
+    .metric-card.goals { --accent:#2563eb; --accent-soft:#edf4ff; }
+    .metric-card.assists { --accent:#d94657; --accent-soft:#fff0f1; }
+    .metric-card.defense { --accent:#d49a1e; --accent-soft:#fff7e4; }
+    .metric-card.saves { --accent:#0eaa83; --accent-soft:#e8fbf5; }
+    body.dark .metric-card.goals { --accent-soft:#172b4c; }
+    body.dark .metric-card.assists { --accent-soft:#3d2027; }
+    body.dark .metric-card.defense { --accent-soft:#3b3017; }
+    body.dark .metric-card.saves { --accent-soft:#12372f; }
+    .metric-head { display:flex; align-items:center; justify-content:space-between; gap:9px; }
+    .metric-name-wrap { display:flex; align-items:center; gap:9px; min-width:0; }
+    .metric-icon { width:39px;height:39px;border-radius:13px;display:grid;place-items:center;background:var(--accent-soft);font-size:21px;flex:none; }
+    .metric-name { font-weight:900; font-size:15px; }
+    .metric-limit { color:var(--muted); font-size:10px; margin-top:4px; }
+    .help-btn { flex:none; width:27px;height:27px;border-radius:50%;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font-weight:900;cursor:pointer; }
+    .metric-number-row { display:flex; align-items:baseline; justify-content:space-between; margin:15px 0 10px; }
+    .metric-count { font-size:31px; font-weight:900; letter-spacing:-1px; color:var(--ink); direction:ltr; }
+    .metric-count small { color:var(--muted);font-size:12px;font-weight:700;letter-spacing:0; }
+    .metric-percent { color:var(--accent);font-weight:900;font-size:12px;direction:ltr; }
+    .metric-progress {height:5px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin-bottom:13px;}
+    .metric-progress span {display:block;height:100%;width:0;border-radius:99px;background:var(--accent);transition:width .25s;}
+    .bubbles-grid { display:grid; grid-template-columns:repeat(14,minmax(0,1fr)); gap:6px; padding:3px 1px 6px; max-height:145px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--line) transparent; }
+    .bubble { aspect-ratio:1; min-width:0; border-radius:50%; border:1px solid var(--line); background:var(--surface-2); color:transparent; padding:0; cursor:pointer; transition:transform .15s,background .15s,border-color .15s,box-shadow .15s; position:relative; }
+    .bubble:hover:not(:disabled) { transform:scale(1.18); border-color:var(--accent); z-index:1; }
+    .bubble.active { background:var(--accent);border-color:var(--accent);box-shadow:0 2px 7px color-mix(in srgb,var(--accent) 25%,transparent); }
+    .bubble.active:after { content:"";position:absolute;inset:34%;border-radius:50%;background:rgba(255,255,255,.7); }
+    .bubble:disabled { cursor:not-allowed;opacity:.32; }
+    .bubble[data-day]:not(.active) { color:var(--muted);font-size:8px; }
+    .bubble[data-day]:not(.active):after { content:attr(data-day); position:absolute; inset:0; display:grid;place-items:center; }
+    .metric-controls {display:flex;align-items:center;justify-content:center;gap:9px;margin-top:13px;}
+    .control-btn {height:38px;min-width:43px;padding:0 13px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font-size:17px;font-weight:900;cursor:pointer;transition:transform .15s,filter .15s;}
+    .control-btn:hover {transform:translateY(-2px);filter:brightness(.98);}
+    .control-btn.primary {background:var(--accent);color:#fff;border-color:var(--accent);min-width:100px;box-shadow:0 6px 13px color-mix(in srgb,var(--accent) 20%,transparent);font-size:14px;}
+    .control-btn.quick {border-color:var(--accent);color:var(--accent);font-size:12px;}
+    .counter-hint {text-align:center;color:var(--muted);font-size:10px;margin-top:9px;min-height:14px;}
+    .trophy-section,.league-section {background:var(--surface);border:1px solid var(--line);border-radius:25px;padding:19px;box-shadow:var(--shadow);}
+    .trophy-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+    .trophy-card {border:1px solid var(--line);border-radius:18px;padding:14px 10px 12px;text-align:center;background:linear-gradient(180deg,var(--surface),var(--surface-2));min-width:0;position:relative;overflow:hidden;}
+    .trophy-card.unlocked {border-color:rgba(205,157,45,.45);background:linear-gradient(180deg,rgba(255,248,223,.7),var(--surface));}
+    body.dark .trophy-card.unlocked {background:linear-gradient(180deg,rgba(95,72,24,.18),var(--surface));}
+    .trophy-card.unlocked:after {content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.12),transparent 70%);pointer-events:none;}
+    .trophy-figure {height:82px;display:grid;place-items:center;filter:drop-shadow(0 8px 5px rgba(116,83,18,.2));}
+    .trophy-figure svg {width:76px;height:76px;overflow:visible;}
+    .trophy-name {font-size:12px;font-weight:900;line-height:1.5;min-height:36px;}
+    .trophy-rule {color:var(--muted);font-size:10px;line-height:1.5;min-height:30px;margin-top:3px;}
+    .trophy-total {margin:9px auto 0;display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);font-size:12px;font-weight:900;direction:ltr;}
+    .trophy-card.unlocked .trophy-total {background:#fff1bd;color:#865c07;border-color:#f0d37f;}
+    body.dark .trophy-card.unlocked .trophy-total {background:#473716;color:#ffdc86;border-color:#72591f;}
+    .trophy-status {font-size:9px;color:var(--muted);margin-top:7px;}
+    .podium {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;direction:ltr;align-items:end;margin:9px 0 18px;}
+    .podium-card {direction:rtl;text-align:center;border:1px solid var(--line);border-radius:17px 17px 10px 10px;padding:14px 7px 10px;background:var(--surface-2);min-width:0;position:relative;}
+    .podium-card.first {min-height:142px;background:linear-gradient(180deg,rgba(255,226,144,.28),var(--surface-2));border-color:rgba(208,163,56,.55);}
+    .podium-card.second {min-height:119px;}.podium-card.third {min-height:106px;}
+    .podium-medal {font-size:25px;line-height:1.3;}
+    .podium-rank {font-size:9px;color:var(--muted);font-weight:800;margin-top:2px;}
+    .podium-name {font-size:12px;font-weight:900;margin-top:5px;overflow-wrap:anywhere;}
+    .podium-score {font-size:20px;font-weight:900;direction:ltr;margin-top:3px;}
+    .podium-score small {font-size:9px;color:var(--muted);}
+    .league-table-wrap {overflow-x:auto;border:1px solid var(--line);border-radius:15px;}
+    .league-table {width:100%;border-collapse:collapse;min-width:390px;font-size:12px;}
+    .league-table th {background:var(--surface-2);color:var(--muted);font-weight:800;font-size:10px;padding:12px 10px;text-align:right;}
+    .league-table td {padding:11px 10px;border-top:1px solid var(--line);font-weight:700;}
+    .league-table td:first-child,.league-table th:first-child{text-align:center;width:48px;}
+    .league-table td:last-child,.league-table th:last-child{text-align:left;direction:ltr;width:80px;}
+    .league-table tr.me {background:var(--green-soft);color:var(--green-dark);}
+    .league-table tr.me td {font-weight:900;}
+    .rank-pill {display:inline-grid;place-items:center;width:23px;height:23px;border-radius:8px;background:var(--surface-2);color:var(--muted);font-size:10px;}
+    .me .rank-pill {background:var(--green);color:white;}
+    .league-foot {display:flex;align-items:center;gap:7px;color:var(--muted);font-size:10px;margin-top:12px;line-height:1.6;}
+    .footer {text-align:center;color:var(--muted);font-size:10px;margin:22px 0 0;}
+    .modal-backdrop {position:fixed;inset:0;z-index:50;background:rgba(4,18,11,.55);display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(5px);}
+    .modal-backdrop.open {display:flex;}
+    .modal {width:min(420px,100%);border:1px solid var(--line);border-radius:22px;background:var(--surface);color:var(--ink);padding:22px;box-shadow:0 25px 75px rgba(0,0,0,.25);animation:modalIn .2s ease-out;}
+    @keyframes modalIn {from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+    .modal-top {display:flex;justify-content:space-between;align-items:center;gap:10px;}
+    .modal h3 {margin:0;font-size:18px;}
+    .modal p {color:var(--muted);font-size:13px;line-height:1.9;margin:13px 0 18px;}
+    .modal-close {width:32px;height:32px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--ink);cursor:pointer;}
+    .modal-ok {border:0;border-radius:12px;background:var(--green);color:#fff;padding:10px 20px;font-weight:800;cursor:pointer;}
+    .toast {position:fixed;z-index:70;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#102b1d;color:white;border:1px solid rgba(255,255,255,.14);padding:11px 16px;border-radius:13px;font-size:12px;font-weight:800;box-shadow:0 12px 30px rgba(0,0,0,.2);transition:opacity .22s,transform .22s;max-width:calc(100% - 30px);text-align:center;}
+    .toast.show {opacity:1;transform:translate(-50%,0);}
+    .fx-layer {position:fixed;inset:0;z-index:65;pointer-events:none;overflow:hidden;}
+    .fx-emoji {position:absolute;left:50%;top:60%;font-size:42px;filter:drop-shadow(0 8px 8px rgba(0,0,0,.18));animation:goalFly 1.15s cubic-bezier(.15,.7,.2,1) forwards;}
+    .fx-emoji.assist {animation:assistFly .95s ease-out forwards;}
+    .fx-emoji.save {animation:savePop .85s ease-out forwards;}
+    .fx-emoji.defense {animation:shieldPop .95s ease-out forwards;}
+    .fx-emoji.fire {font-size:38px;animation:fireBall 1.5s ease-out forwards;}
+    @keyframes goalFly {0%{transform:translate(-50%,45px) scale(.55) rotate(-20deg);opacity:0}15%{opacity:1}75%{transform:translate(calc(-50% + 38px),-240px) scale(1.12) rotate(300deg)}100%{transform:translate(calc(-50% + 38px),-300px) scale(.6) rotate(440deg);opacity:0}}
+    @keyframes assistFly {0%{transform:translate(-50%,0) scale(.4) rotate(-35deg);opacity:0}20%{opacity:1}100%{transform:translate(160px,-120px) scale(1.15) rotate(35deg);opacity:0}}
+    @keyframes savePop {0%{transform:translate(-50%,45px) scale(.3);opacity:0}35%{opacity:1;transform:translate(-50%,-20px) scale(1.3)}100%{transform:translate(-50%,-150px) scale(.85);opacity:0}}
+    @keyframes shieldPop {0%{transform:translate(-50%,20px) scale(.3);opacity:0}30%{opacity:1;transform:translate(-50%,-25px) scale(1.3)}100%{transform:translate(-50%,-135px) scale(1);opacity:0}}
+    @keyframes fireBall {0%{transform:translate(-50%,40px) scale(.3);opacity:0}20%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-220px + var(--dy))) scale(1.1) rotate(330deg);opacity:0}}
+    .confetti {position:absolute;top:62%;left:50%;width:8px;height:13px;border-radius:2px;animation:confetti 1.65s ease-out forwards;}
+    @keyframes confetti {0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(680deg);opacity:0}}
+    .sr-only {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+    @media (max-width:720px) {
+      .app-shell{width:min(100% - 22px,560px);padding-top:11px;}
+      .topbar{gap:8px;} .brand{gap:8px;} .brand-name{font-size:14px;} .brand-sub{font-size:9px;}
+      .hero{padding:22px 19px;min-height:230px;border-radius:22px;}
+      .hero-side{left:18px;bottom:15px;}
+      .metrics-grid{grid-template-columns:1fr;gap:12px;}
+      .metric-card{padding:15px;}
+      .bubbles-grid{grid-template-columns:repeat(15,minmax(0,1fr));max-height:132px;}
+      .section-head{margin-top:25px;}
+      .trophy-section,.league-section{padding:14px;border-radius:20px;}
+      .trophy-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+      .trophy-card{padding:11px 8px;}
+      .trophy-figure{height:72px;}.trophy-figure svg{width:68px;height:68px;}
+      .podium{gap:6px;}.podium-card{padding:11px 5px;}
+      .podium-name{font-size:11px;}
+    }
+    @media (max-width:390px) {
+      .brand-mark{width:38px;height:38px;}.brand-name{font-size:13px;}.top-actions{gap:6px;}.icon-btn{min-width:38px;height:38px;}.reset-btn{height:38px;padding:0 9px;font-size:12px;}
+      .bubbles-grid{grid-template-columns:repeat(13,minmax(0,1fr));gap:5px;}
+      .metric-name{font-size:14px;}
+    }
+    @media (max-width:350px) { .brand-name{font-size:11px;letter-spacing:-.25px;} .brand-sub{font-size:8px;} .brand-mark{width:34px;height:34px;} .icon-btn{min-width:34px;height:36px;} .reset-btn{height:36px;font-size:11px;padding:0 7px;} }
+    @media (prefers-reduced-motion:reduce) { *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 pb-16">
-
-    <!-- Floating Animation Overlay Layer -->
-    <div id="animation-overlay-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
-
-    <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-20 opacity-0 transition-all duration-300 z-50 bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 px-6 py-3 rounded-2xl shadow-2xl font-bold text-sm flex items-center gap-3 pointer-events-none">
-        <i class="fa-solid fa-trophy text-amber-400"></i>
-        <span id="toast-message">تم تسجيل الإنجاز بنجاح</span>
-    </div>
-
-    <!-- Tooltip Modal Dialog -->
-    <div id="tooltip-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white dark:bg-slate-900 border-2 border-emerald-600 rounded-3xl p-6 max-w-md w-full shadow-2xl transform scale-95 transition-transform duration-300" id="tooltip-content-box">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <div id="tooltip-icon-wrapper" class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl text-white shadow-md">
-                        <i id="tooltip-modal-icon" class="fa-solid fa-circle-question"></i>
-                    </div>
-                    <h3 id="tooltip-modal-title" class="text-xl font-black">شرح الفئة</h3>
-                </div>
-                <button onclick="closeTooltipModal()" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors">
-                    <i class="fa-solid fa-xmark text-slate-500"></i>
-                </button>
-            </div>
-            <p id="tooltip-modal-desc" class="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-6 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 font-medium"></p>
-            <button onclick="closeTooltipModal()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-emerald-500/20">حسناً، فهمت</button>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">⚽</div>
+        <div>
+          <div class="brand-name">Premier League Tracker</div>
+          <div class="brand-sub">YOUR SEASON. YOUR LEGACY.</div>
         </div>
-    </div>
-
-    <!-- FIXED TOP NAVIGATION BAR (Facebook-Style Sticky Bar with Premier League Pitch Green Header) -->
-    <nav class="sticky top-0 z-40 bg-emerald-950/95 border-b-2 border-emerald-600 shadow-lg text-white backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                
-                <!-- Logo & Brand -->
-                <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-green-400 flex items-center justify-center text-slate-950 text-xl shadow-lg shadow-emerald-500/30 font-black">
-                        <i class="fa-solid fa-crown"></i>
-                    </div>
-                    <span class="text-lg font-black tracking-tight hidden sm:inline text-emerald-400">
-                        هداف الدوري الإنجليزي ⚽
-                    </span>
-                </div>
-
-                <!-- Central Tab Controls -->
-                <div class="flex items-center justify-center gap-1 sm:gap-2 flex-1 max-w-xl mx-2">
-                    <!-- Tab 1: Dashboard -->
-                    <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm transition-all text-emerald-400 bg-emerald-900/80">
-                        <i class="fa-solid fa-chart-pie text-base sm:text-lg"></i>
-                        <span>الرئيسية</span>
-                    </button>
-                    <!-- Tab 2: Stadium & Goals -->
-                    <button onclick="switchTab('stadium')" id="tab-btn-stadium" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm text-emerald-200/70 hover:text-white transition-all">
-                        <i class="fa-solid fa-futbol text-base sm:text-lg"></i>
-                        <span>الملعب والأهداف</span>
-                    </button>
-                    <!-- Tab 3: Trophies Cabinet -->
-                    <button onclick="switchTab('trophies')" id="tab-btn-trophies" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm text-emerald-200/70 hover:text-white transition-all">
-                        <i class="fa-solid fa-trophy text-base sm:text-lg"></i>
-                        <span>الكؤوس</span>
-                    </button>
-                    <!-- Tab 4: Leaderboard -->
-                    <button onclick="switchTab('leaderboard')" id="tab-btn-leaderboard" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm text-emerald-200/70 hover:text-white transition-all">
-                        <i class="fa-solid fa-ranking-star text-base sm:text-lg"></i>
-                        <span>الدوري (20)</span>
-                    </button>
-                </div>
-
-                <!-- Theme Switch & Actions -->
-                <div class="flex items-center gap-2">
-                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl bg-emerald-900/60 hover:bg-emerald-800 flex items-center justify-center text-amber-400 transition-colors shadow-sm" title="تغير المظهر">
-                        <i id="theme-icon" class="fa-solid fa-moon text-base"></i>
-                    </button>
-                    <button onclick="confirmResetCycle()" class="w-10 h-10 rounded-2xl bg-red-950/60 hover:bg-red-900 text-red-400 flex items-center justify-center transition-colors shadow-sm" title="إعادة تعيين الدورة الحالية">
-                        <i class="fa-solid fa-rotate-right text-sm"></i>
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </nav>
-
-    <!-- Top Temporal Status Banner in Stadium Green Theme -->
-    <header class="bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-950 text-white py-3.5 border-b border-emerald-700/50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm font-bold">
-            <div class="flex items-center gap-2.5">
-                <i class="fa-regular fa-calendar-check text-lg text-amber-300"></i>
-                <span id="temporal-cycle-string">جاري حساب الدورة الشهرية...</span>
-            </div>
-            <div class="flex items-center gap-4">
-                <span id="temporal-current-date" class="bg-emerald-950/60 border border-emerald-600/40 backdrop-blur-md px-3 py-1 rounded-xl">التاريخ: --</span>
-                <span id="temporal-days-left" class="bg-amber-400 text-slate-950 px-3 py-1 rounded-xl font-black shadow-md">متبقي -- أيام</span>
-            </div>
-        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="تغيير المظهر" title="تغيير المظهر">☾</button>
+        <button class="reset-btn" id="hardReset" type="button">💣 إعادة ضبط</button>
+      </div>
     </header>
 
-    <!-- MAIN CONTENT CONTAINER WITH GREEN BORDER ACCENTS -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-
-        <!-- ==================== TAB 1: DASHBOARD & OVERVIEW ==================== -->
-        <section id="tab-section-dashboard" class="tab-content space-y-8">
-            
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-3xl border-2 border-emerald-600/30 shadow-md">
-                <div>
-                    <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                        غرفة قيادة هداف الدوري الإنجليزي 🏆
-                    </h2>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">تابع أداءك اليومي، أهدافك السريعة، ومركزك بين الـ 20 منافساً في جدول الترتيب.</p>
-                </div>
-                <button onclick="switchTab('stadium')" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-2xl transition-all shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-plus-circle"></i> إضافة أهداف جديدة
-                </button>
-            </div>
-
-            <!-- ... existing code for Overview Grid Cards ... -->
-            <!-- Goals Summary Card -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                
-                <div class="bg-white dark:bg-slate-900 border-2 border-blue-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-blue-500 transition-all">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-                            <i class="fa-solid fa-bullseye text-lg"></i>
-                        </div>
-                        <span class="text-xs font-extrabold px-2.5 py-1 bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-full">حد 350/شهر</span>
-                    </div>
-                    <div class="flex items-baseline justify-between">
-                        <h3 id="dash-goals-val" class="text-3xl font-black text-blue-600 dark:text-blue-400">0</h3>
-                        <span class="text-xs text-slate-400 font-bold">ساعة مذاكرة</span>
-                    </div>
-                    <div class="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
-                        <div id="dash-goals-bar" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <div class="mt-2 flex justify-between text-[11px] text-slate-400 font-bold">
-                        <span>الهدف الذهبي (150 س)</span>
-                        <span id="dash-goals-pct">0%</span>
-                    </div>
-                </div>
-
-                <!-- Assists Summary Card -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-red-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-red-500 transition-all">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="w-10 h-10 rounded-2xl bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center font-bold">
-                            <i class="fa-solid fa-hands-holding-child text-lg"></i>
-                        </div>
-                        <span class="text-xs font-extrabold px-2.5 py-1 bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 rounded-full">حد 50/شهر</span>
-                    </div>
-                    <div class="flex items-baseline justify-between">
-                        <h3 id="dash-assists-val" class="text-3xl font-black text-red-600 dark:text-red-400">0</h3>
-                        <span class="text-xs text-slate-400 font-bold">تمريرة حاسمة</span>
-                    </div>
-                    <div class="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
-                        <div id="dash-assists-bar" class="bg-red-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <div class="mt-2 flex justify-between text-[11px] text-slate-400 font-bold">
-                        <span>القلم الذهبي (30)</span>
-                        <span id="dash-assists-pct">0%</span>
-                    </div>
-                </div>
-
-                <!-- Clean Sheet Summary Card -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-amber-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-amber-500 transition-all">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
-                            <i class="fa-solid fa-shield-halved text-lg"></i>
-                        </div>
-                        <span class="text-xs font-extrabold px-2.5 py-1 bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 rounded-full">حد 30 يوم</span>
-                    </div>
-                    <div class="flex items-baseline justify-between">
-                        <h3 id="dash-cleansheet-val" class="text-3xl font-black text-amber-600 dark:text-amber-400">0</h3>
-                        <span class="text-xs text-slate-400 font-bold">أيام نظيفة</span>
-                    </div>
-                    <div class="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
-                        <div id="dash-cleansheet-bar" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <div class="mt-2 flex justify-between text-[11px] text-slate-400 font-bold">
-                        <span>سلسلة الأيام النظيفة</span>
-                        <span id="dash-cleansheet-streak">0 متتالية</span>
-                    </div>
-                </div>
-
-                <!-- Saves Summary Card -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-emerald-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-emerald-500 transition-all">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
-                            <i class="fa-solid fa-hand-fist text-lg"></i>
-                        </div>
-                        <span class="text-xs font-extrabold px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-full">حد 50/شهر</span>
-                    </div>
-                    <div class="flex items-baseline justify-between">
-                        <h3 id="dash-saves-val" class="text-3xl font-black text-emerald-600 dark:text-emerald-400">0</h3>
-                        <span class="text-xs text-slate-400 font-bold">تصدي بطولي</span>
-                    </div>
-                    <div class="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
-                        <div id="dash-saves-bar" class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <div class="mt-2 flex justify-between text-[11px] text-slate-400 font-bold">
-                        <span>نسبة التدارك</span>
-                        <span id="dash-saves-pct">0%</span>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Detailed Progress Highlights with Pitch Green Background -->
-            <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-green-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-emerald-600/40 flex flex-col md:flex-row items-center justify-between gap-6">
-                <d
+    <section class="hero" aria-label="ملخص الموسم">
+      <div class="pitch-lines"></div>
+      <div class="hero-content">
+        <span class="season-kicker" id="seasonLabel">الموسم الأول</span>
+        <h1>الملعب ملعبك.<br>والإنجاز يُحسب لك.</h1>
+        <p>حوّل ساعات تركيزك إلى أهداف، وأيام انضباطك إلى بطولات. كل إنجاز صغير يقرّبك من كأس الموسم.</p>
+        <div class="season-progress">
+          <div class="progress-meta"><span id="seasonDayText">اليوم 1 من 30</span><strong id="seasonDaysLeft">متبقي 29 يومًا<
