@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premier League - Champions League Tracker</title>
+    <title>هداف الدوري الإنجليزي - لوحة الأبطال</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -28,7 +28,6 @@
                         goal: '#2563eb',
                         assist: '#dc2626',
                         cleansheet: '#d97706',
-                        hattrick: '#9333ea',
                         save: '#16a34a'
                     }
                 }
@@ -48,6 +47,7 @@
             user-select: none;
         }
 
+        /* Pitch Green Outer Border Accent */
         .app-green-border {
             border: 2px solid #16a34a;
         }
@@ -55,6 +55,7 @@
             border: 2px solid #22c55e;
         }
 
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -70,6 +71,7 @@
             background: rgba(22, 163, 74, 0.8);
         }
 
+        /* Micro-Animations Keyframes */
         @keyframes shootBall {
             0% { transform: scale(0.3) translate(0, 0) rotate(0deg); opacity: 0; }
             50% { opacity: 1; transform: scale(1.4) translate(-15px, -25px) rotate(180deg); }
@@ -88,16 +90,9 @@
             100% { transform: translateY(-25px) scale(0.9); opacity: 0; }
         }
 
-        @keyframes slideTackle {
-            0% { transform: translateX(30px) skewX(20deg); opacity: 0; }
-            50% { transform: translateX(0px) skewX(-10deg) scale(1.2); opacity: 1; }
-            100% { transform: translateX(-30px) skewX(0deg); opacity: 0; }
-        }
-
         .anim-shoot { animation: shootBall 1.2s ease-out forwards; }
         .anim-pass { animation: passLeg 1.2s ease-out forwards; }
         .anim-save { animation: saveGlove 1.2s ease-out forwards; }
-        .anim-tackle { animation: slideTackle 1.2s ease-out forwards; }
 
         .bubble-btn {
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -106,17 +101,15 @@
             transform: scale(0.85);
         }
 
+        /* Realistic Trophy Glow & Shimmer */
         .trophy-glow {
             filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.4));
-        }
-        .trophy-shimmer {
-            background: linear-gradient(135deg, #fff3a1 0%, #d4af37 40%, #aa7c11 100%);
         }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 pb-16">
 
-    <!-- Animation Overlay Layer -->
+    <!-- Floating Animation Overlay Layer -->
     <div id="animation-overlay-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
     <!-- Notification Toast -->
@@ -155,24 +148,28 @@
                         <i class="fa-solid fa-crown"></i>
                     </div>
                     <span class="text-lg font-black tracking-tight hidden sm:inline text-emerald-400">
-                        Premier League Tracker ⚽
+                        هداف الدوري الإنجليزي ⚽
                     </span>
                 </div>
 
                 <!-- Central Tab Controls -->
                 <div class="flex items-center justify-center gap-1 sm:gap-2 flex-1 max-w-xl mx-2">
+                    <!-- Tab 1: Dashboard -->
                     <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm transition-all text-emerald-400 bg-emerald-900/80">
                         <i class="fa-solid fa-chart-pie text-base sm:text-lg"></i>
                         <span>الرئيسية</span>
                     </button>
+                    <!-- Tab 2: Stadium & Goals -->
                     <button onclick="switchTab('stadium')" id="tab-btn-stadium" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm text-emerald-200/70 hover:text-white transition-all">
                         <i class="fa-solid fa-futbol text-base sm:text-lg"></i>
                         <span>الملعب والأهداف</span>
                     </button>
+                    <!-- Tab 3: Trophies Cabinet -->
                     <button onclick="switchTab('trophies')" id="tab-btn-trophies" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm text-emerald-200/70 hover:text-white transition-all">
                         <i class="fa-solid fa-trophy text-base sm:text-lg"></i>
                         <span>الكؤوس</span>
                     </button>
+                    <!-- Tab 4: Leaderboard -->
                     <button onclick="switchTab('leaderboard')" id="tab-btn-leaderboard" class="nav-tab-btn flex-1 py-2 sm:py-2.5 px-2 rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 font-bold text-xs sm:text-sm text-emerald-200/70 hover:text-white transition-all">
                         <i class="fa-solid fa-ranking-star text-base sm:text-lg"></i>
                         <span>الدوري (20)</span>
@@ -184,11 +181,9 @@
                     <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl bg-emerald-900/60 hover:bg-emerald-800 flex items-center justify-center text-amber-400 transition-colors shadow-sm" title="تغير المظهر">
                         <i id="theme-icon" class="fa-solid fa-moon text-base"></i>
                     </button>
-                    <button onclick="confirmHardReset()" class="w-10 h-10 rounded-2xl bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-colors shadow-sm" title="إعادة ضبط البرنامج للصفر تماماً">
-                        <i class="fa-solid fa-bomb text-sm"></i>
-                    </button>
-                    <button onclick="confirmResetCycle()" class="w-10 h-10 rounded-2xl bg-emerald-900/60 hover:bg-emerald-800 text-amber-300 flex items-center justify-center transition-colors shadow-sm" title="تصفير الدورة الشهرية يدوياً">
-                        <i class="fa-solid fa-rotate-right text-sm"></i>
+                    <!-- 3. Hard Reset Button (Top Right / Left in RTL) -->
+                    <button onclick="confirmHardReset()" class="w-10 h-10 rounded-2xl bg-red-600/80 hover:bg-red-700 text-white flex items-center justify-center transition-all shadow-md shadow-red-900/40" title="إعادة ضبط الشامل (Hard Reset)">
+                        <i class="fa-solid fa-bomb text-base"></i>
                     </button>
                 </div>
 
@@ -196,16 +191,16 @@
         </div>
     </nav>
 
-    <!-- Top Temporal Status Banner (30 Days Cycle) -->
+    <!-- Top Temporal Status Banner (5. Updated terminology to "Season") -->
     <header class="bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-950 text-white py-3.5 border-b border-emerald-700/50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm font-bold">
             <div class="flex items-center gap-2.5">
                 <i class="fa-regular fa-calendar-check text-lg text-amber-300"></i>
-                <span id="temporal-cycle-string">دورة التحدي الشهرية (30 يوماً)</span>
+                <span id="temporal-cycle-string">جاري حساب الموسم...</span>
             </div>
             <div class="flex items-center gap-4">
-                <span id="temporal-current-day" class="bg-emerald-950/60 border border-emerald-600/40 backdrop-blur-md px-3 py-1 rounded-xl">اليوم: 1 من 30</span>
-                <span id="temporal-days-left" class="bg-amber-400 text-slate-950 px-3 py-1 rounded-xl font-black shadow-md">متبقي 30 يوم</span>
+                <span id="temporal-current-date" class="bg-emerald-950/60 border border-emerald-600/40 backdrop-blur-md px-3 py-1 rounded-xl">التاريخ: --</span>
+                <span id="temporal-days-left" class="bg-amber-400 text-slate-950 px-3 py-1 rounded-xl font-black shadow-md">متبقي -- أيام</span>
             </div>
         </div>
     </header>
@@ -213,9 +208,8 @@
     <!-- MAIN CONTENT CONTAINER -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 
-        <!-- ==================== TAB 1: DASHBOARD ==================== -->
+        <!-- ==================== TAB 1: DASHBOARD & OVERVIEW ==================== -->
         <section id="tab-section-dashboard" class="tab-content space-y-8">
-            
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-3xl border-2 border-emerald-600/30 shadow-md">
                 <div>
                     <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
@@ -228,16 +222,14 @@
                 </button>
             </div>
 
-            <!-- Overview Grid Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                
                 <!-- Goals Summary Card -->
                 <div class="bg-white dark:bg-slate-900 border-2 border-blue-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-blue-500 transition-all">
                     <div class="flex items-center justify-between mb-3">
                         <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-bullseye text-lg"></i>
                         </div>
-                        <span class="text-xs font-extrabold px-2.5 py-1 bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-full">حد 350/شهر</span>
+                        <span class="text-xs font-extrabold px-2.5 py-1 bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-full">حد 350/موسم</span>
                     </div>
                     <div class="flex items-baseline justify-between">
                         <h3 id="dash-goals-val" class="text-3xl font-black text-blue-600 dark:text-blue-400">0</h3>
@@ -247,7 +239,7 @@
                         <div id="dash-goals-bar" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                     <div class="mt-2 flex justify-between text-[11px] text-slate-400 font-bold">
-                        <span>هداف الدوري (150 س)</span>
+                        <span>الهدف الذهبي (150 س)</span>
                         <span id="dash-goals-pct">0%</span>
                     </div>
                 </div>
@@ -258,7 +250,7 @@
                         <div class="w-10 h-10 rounded-2xl bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-hands-holding-child text-lg"></i>
                         </div>
-                        <span class="text-xs font-extrabold px-2.5 py-1 bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 rounded-full">حد 50/شهر</span>
+                        <span class="text-xs font-extrabold px-2.5 py-1 bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 rounded-full">حد 50/موسم</span>
                     </div>
                     <div class="flex items-baseline justify-between">
                         <h3 id="dash-assists-val" class="text-3xl font-black text-red-600 dark:text-red-400">0</h3>
@@ -289,8 +281,8 @@
                         <div id="dash-cleansheet-bar" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                     <div class="mt-2 flex justify-between text-[11px] text-slate-400 font-bold">
-                        <span>الكرة الذهبية (30 د)</span>
-                        <span id="dash-cleansheet-streak">0 يوم</span>
+                        <span>سلسلة الأيام النظيفة</span>
+                        <span id="dash-cleansheet-streak">0 متتالية</span>
                     </div>
                 </div>
 
@@ -300,7 +292,7 @@
                         <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-hand-fist text-lg"></i>
                         </div>
-                        <span class="text-xs font-extrabold px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-full">حد 50/شهر</span>
+                        <span class="text-xs font-extrabold px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-full">حد 50/موسم</span>
                     </div>
                     <div class="flex items-baseline justify-between">
                         <h3 id="dash-saves-val" class="text-3xl font-black text-emerald-600 dark:text-emerald-400">0</h3>
@@ -314,11 +306,20 @@
                         <span id="dash-saves-pct">0%</span>
                     </div>
                 </div>
+            </div>
+        </section>
 
+        <!-- ==================== TAB 2: STADIUM & GOALS INPUT ==================== -->
+        <section id="tab-section-stadium" class="tab-content hidden space-y-8">
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border-2 border-emerald-600/30 shadow-md flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                        الملعب وتسجيل الأهداف ⚽
+                    </h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">سجل نقاطك اليومية وساعات المذاكرة والتصديات بدقة لتعزيز مكانتك في الموسم.</p>
+                </div>
             </div>
 
-            <!-- Detailed Progress Highlights Banner -->
-            <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-green-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-emerald-600/40 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="space-y-2 text-center md:text-right">
-                    <h3 class="text-xl font-black text-emerald-400 flex items-center justify-center md:justify-start gap-2">
-              
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 1. Goal Input Card -->
+                <div class="bg-white dark:bg-slate-900 border-2 border-blue-500/30 round
