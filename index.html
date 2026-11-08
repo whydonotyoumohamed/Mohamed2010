@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premier League - Champions League Tracker</title>
+    <title>Premier League Tracker - هداف الدوري الإنجليزي</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -109,23 +109,20 @@
         .trophy-glow {
             filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.4));
         }
-        .trophy-shimmer {
-            background: linear-gradient(135deg, #fff3a1 0%, #d4af37 40%, #aa7c11 100%);
-        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 pb-16">
 
-    <!-- Animation Overlay -->
+    <!-- Floating Animation Overlay -->
     <div id="animation-overlay-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
-    <!-- Toast Notification -->
+    <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-20 opacity-0 transition-all duration-300 z-50 bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 px-6 py-3 rounded-2xl shadow-2xl font-bold text-sm flex items-center gap-3 pointer-events-none">
         <i class="fa-solid fa-trophy text-amber-400"></i>
         <span id="toast-message">تم تسجيل الإنجاز بنجاح</span>
     </div>
 
-    <!-- Tooltip Modal -->
+    <!-- Tooltip Modal Dialog -->
     <div id="tooltip-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
         <div class="bg-white dark:bg-slate-900 border-2 border-emerald-600 rounded-3xl p-6 max-w-md w-full shadow-2xl transform scale-95 transition-transform duration-300" id="tooltip-content-box">
             <div class="flex items-center justify-between mb-4">
@@ -179,9 +176,9 @@
                     </button>
                 </div>
 
-                <!-- Theme Switch & Hard Reset & Cycle Reset -->
+                <!-- Action Controls: Theme + Hard Reset + Cycle Reset -->
                 <div class="flex items-center gap-2">
-                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl bg-emerald-900/60 hover:bg-emerald-800 flex items-center justify-center text-amber-400 transition-colors shadow-sm" title="تغيير المظهر">
+                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl bg-emerald-900/60 hover:bg-emerald-800 flex items-center justify-center text-amber-400 transition-colors shadow-sm" title="تغير المظهر">
                         <i id="theme-icon" class="fa-solid fa-moon text-base"></i>
                     </button>
                     <button onclick="confirmHardReset()" class="w-10 h-10 rounded-2xl bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-colors shadow-sm" title="إعادة ضبط البرنامج للصفر تماماً">
@@ -220,17 +217,17 @@
                     <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
                         غرفة القيادة - Premier League 🏆
                     </h2>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">تابع إنجازاتك اليومية، أهدافك، ومعرض الجوائز المتراكم.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">تابع أداءك اليومي، أهدافك، ومعرض الكؤوس التراكمي.</p>
                 </div>
                 <button onclick="switchTab('stadium')" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-2xl transition-all shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-plus-circle"></i> إضافة أهداف جديدة
                 </button>
             </div>
 
-            <!-- Summary Cards -->
+            <!-- Overview Grid Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 <!-- Goals -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-blue-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-blue-500 transition-all">
+                <div class="bg-white dark:bg-slate-900 border-2 border-blue-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden">
                     <div class="flex items-center justify-between mb-3">
                         <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-bullseye text-lg"></i>
@@ -251,7 +248,7 @@
                 </div>
 
                 <!-- Assists -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-red-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-red-500 transition-all">
+                <div class="bg-white dark:bg-slate-900 border-2 border-red-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden">
                     <div class="flex items-center justify-between mb-3">
                         <div class="w-10 h-10 rounded-2xl bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-hands-holding-child text-lg"></i>
@@ -272,7 +269,7 @@
                 </div>
 
                 <!-- Clean Sheet -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-amber-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-amber-500 transition-all">
+                <div class="bg-white dark:bg-slate-900 border-2 border-amber-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden">
                     <div class="flex items-center justify-between mb-3">
                         <div class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-shield-halved text-lg"></i>
@@ -288,12 +285,12 @@
                     </div>
                     <div class="mt-2 flex justify-between text-[11px] text-slate-400 font-bold">
                         <span>الكرة الذهبية (30 د)</span>
-                        <span id="dash-cleansheet-streak">0 متتالية</span>
+                        <span id="dash-cleansheet-streak">0 يوم</span>
                     </div>
                 </div>
 
                 <!-- Saves -->
-                <div class="bg-white dark:bg-slate-900 border-2 border-emerald-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden group hover:border-emerald-500 transition-all">
+                <div class="bg-white dark:bg-slate-900 border-2 border-emerald-500/30 p-5 rounded-3xl shadow-sm relative overflow-hidden">
                     <div class="flex items-center justify-between mb-3">
                         <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-hand-fist text-lg"></i>
@@ -314,10 +311,14 @@
                 </div>
             </div>
 
-            <!-- Dashboard Quick Info Banner -->
+            <!-- Pitch Green Info Banner -->
             <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-green-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-emerald-600/40 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="space-y-2 text-center md:text-right">
                     <h3 class="text-xl font-black text-emerald-400 flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-fire text-amber-400"></i> نظام الجوائز والمعرض التراكمي
+                        <i class="fa-solid fa-fire text-amber-400"></i> معرض الكؤوس التراكمي
                     </h3>
-         
+                    <p class="text-slate-300 text-sm leading-relaxed max-w-2xl">
+                        الكؤوس محفورة في تاريخك؛ كل ما تكسب بطولة بتتحط جنب اختها في المعرض التراكمي مع عداد مضاعف، وبدورة 30 يوم أوتوماتيكية بتبدأ من يوم 1 إلى 30!
+                    </p>
+    </div>
+                
